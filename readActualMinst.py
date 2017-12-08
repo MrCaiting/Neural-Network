@@ -1,4 +1,4 @@
-import cPickle
+import _pickle as cPickle
 import gzip
 
 # Third-party libraries
