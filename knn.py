@@ -45,7 +45,7 @@ for k_val in range(k[0], k[1]+1):
     accuracy, t_time, predict_label = KNN(k_val)
     print("K Nearest Neighbors with K =", k_val)
     print("Training Time: ", t_time, "seconds")
-    print("Accuracy: ", accuracy, "%")
+    print("Accuracy: ", accuracy, "%\n")
     if temp_max == None or accuracy > temp_max:
         temp_max = accuracy
         best_k = k_val
