@@ -19,10 +19,10 @@ TOTAL_DIG = 10
 TOTAL_IMG = 5000
 
 # Chaning Constant for getting best result
-HIDDEN = 100
+HIDDEN = 25
 EPOCHS = 30
 SIZE = 10
-LEARN_RATE = 3.0
+LEARN_RATE = 1
 
 
 # Here we need to establish some helper functions for later use
@@ -130,7 +130,7 @@ class NeuralNetwork(object):
         grad_biases[-1] = delta
         grad_weights[-1] = np.dot(delta, activations[-2].transpose())
 
-        for layer in xrange(2, self.layers):
+        for layer in range(2, self.layers):
             #print("I dont think I can be here twice seriously, l = ", layer)
             vector = act_vectors[-layer]
             d_sig = deriv_sig(vector)
@@ -154,7 +154,7 @@ class NeuralNetwork(object):
             # Since we are using stochastic gradient descent, we need to
             #   randomly choose some of the data
             batches = [training_data[i:i+batch_size]
-                       for i in xrange(0, num_train, batch_size)]
+                       for i in range(0, num_train, batch_size)]
 
             for batch in batches:
                 self.update_SDG(batch, learning_rate)
@@ -172,7 +172,7 @@ class NeuralNetwork(object):
         """
         correct_count = 0
         for ans, correct in results:
-            #print("what are they? ", ans, correct)
+            # print("what are they? ", ans, correct)
             if ans == correct:
                 correct_count += 1
             else:
@@ -185,7 +185,7 @@ def vectorized_result(digit):
     v_r[digit] = 1.0
     return v_r
 
-"""
+
 # Read training labels
 with open(TRAIN_LABEL, 'r') as train_l:
     t_labels = [int(x.strip('\n')) for x in train_l.readlines()]
@@ -211,7 +211,7 @@ for index in range(TOTAL_IMG):
                 this_image.append(0.0)
     training_data.append((np.reshape(this_image, (TOTAL_PIXEL, 1)),
                           vectorized_result(t_labels[index])))
-"""
+
 
 # Read test labels (Need this for testing)
 testlabels = open(TEST_LABEL, 'r')
@@ -233,10 +233,11 @@ for line in testd.readlines():
 
     if len(curr_list) == TOTAL_PIXEL:
         test_data.append((np.reshape(curr_list, (TOTAL_PIXEL, 1)),
-                          test_table[(index/HEIGHT) - 1]))
+                          test_table[int(index/HEIGHT) - 1]))
         curr_list = []
     index += 1
 
+"""
 # An alternative way to import MNIST data
 t_d, _, test = readMnist()
 train_in = [np.reshape(pic, (784, 1)) for pic in t_d[0]]
@@ -246,9 +247,8 @@ training_data_new = zip(train_in, train_out)
 # Not quite necessary for testing
 test_in = [np.reshape(sample, (784, 1)) for sample in test[0]]
 test_data_new = zip(test_in, test[1])
-
-
 """
+
 # Used for tranditional method
 network = NeuralNetwork([TOTAL_PIXEL, HIDDEN, TOTAL_DIG])
 network.train_SDG(training_data, EPOCHS, SIZE, LEARN_RATE, test_data)
@@ -256,3 +256,4 @@ network.train_SDG(training_data, EPOCHS, SIZE, LEARN_RATE, test_data)
 
 network = NeuralNetwork([TOTAL_PIXEL, HIDDEN, TOTAL_DIG])
 network.train_SDG(training_data_new, EPOCHS, SIZE, LEARN_RATE, test_data)
+"""
